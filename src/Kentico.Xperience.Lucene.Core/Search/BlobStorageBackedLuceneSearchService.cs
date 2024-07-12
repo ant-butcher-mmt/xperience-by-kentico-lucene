@@ -43,8 +43,8 @@ internal class BlobStorageBackedLuceneSearchService : ILuceneSearchService
 
         var client = blobContainerClientFactory.Build();
 
-        var indexDir = new AzureBlobDirectory(client, storage.Path);
-        using var reader = DirectoryReader.Open(indexDir);
+        var fileBacked = new FileBackedAzureBlobDirectory(FSDirectory.Open(storage.Path), client, storage.Path);
+        using var reader = DirectoryReader.Open(fileBacked);
         var searcher = new IndexSearcher(reader);
         return useIndexSearcher(searcher);
     }
@@ -66,11 +66,11 @@ internal class BlobStorageBackedLuceneSearchService : ILuceneSearchService
 
         var client = blobContainerClientFactory.Build();
 
-        var indexDir = new AzureBlobDirectory(client, storage.Path);
+        var indexDir = new FileBackedAzureBlobDirectory(FSDirectory.Open(storage.Path), client, storage.Path);
         using var reader = DirectoryReader.Open(indexDir);
         var searcher = new IndexSearcher(reader);
 
-        var taxonomyDir = new AzureBlobDirectory(client, storage.TaxonomyPath);
+        var taxonomyDir = new FileBackedAzureBlobDirectory(FSDirectory.Open(storage.TaxonomyPath), client, storage.Path);
         using var taxonomyReader = new DirectoryTaxonomyReader(taxonomyDir);
 
         var facetsCollector = new FacetsCollector();

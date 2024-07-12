@@ -3,6 +3,8 @@ using Lucene.Net.Facet.Taxonomy.Directory;
 using Lucene.Net.Index;
 using Lucene.Net.Store;
 
+using Directory = System.IO.Directory;
+
 namespace Kentico.Xperience.Lucene.Core.Indexing;
 
 public class BlobStorageBackedLuceneIndexService : ILuceneIndexService
@@ -18,7 +20,7 @@ public class BlobStorageBackedLuceneIndexService : ILuceneIndexService
     {
         var client = blobContainerClientFactory.Build();
 
-        var indexDir = new AzureBlobDirectory(client, storage.Path);
+        var indexDir = new FileBackedAzureBlobDirectory(FSDirectory.Open(storage.Path), client, storage.Path);
 
         var analyzer = index.LuceneAnalyzer;
 
@@ -27,9 +29,10 @@ public class BlobStorageBackedLuceneIndexService : ILuceneIndexService
         {
             OpenMode = openMode // create/overwrite index
         };
+
         var writer = new IndexWriter(indexDir, indexConfig);
 
-        using var taxonomyDir = new AzureBlobDirectory(client, storage.TaxonomyPath);
+        using var taxonomyDir = new FileBackedAzureBlobDirectory(FSDirectory.Open(storage.TaxonomyPath), client, storage.Path);
 
         using var taxonomyWriter = new DirectoryTaxonomyWriter(taxonomyDir);
 
@@ -41,7 +44,16 @@ public class BlobStorageBackedLuceneIndexService : ILuceneIndexService
     {
         var client = blobContainerClientFactory.Build();
 
-        using var indexDir = new AzureBlobDirectory(client, storage.Path);
+        if (!Directory.Exists(storage.Path))
+        {
+            string dirPath = storage.Path.EndsWith(Path.DirectorySeparatorChar)
+                ? storage.Path
+                : storage.Path + Path.DirectorySeparatorChar;
+
+            Directory.CreateDirectory(dirPath);
+        }
+
+        using var indexDir = new FileBackedAzureBlobDirectory(FSDirectory.Open(storage.Path), client, storage.Path);
 
         var analyzer = index.LuceneAnalyzer;
 
