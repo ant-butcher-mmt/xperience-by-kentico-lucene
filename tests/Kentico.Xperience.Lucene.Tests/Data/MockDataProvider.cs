@@ -48,7 +48,8 @@ internal static class MockDataProvider
         },
         [],
         [],
-        LuceneVersion.LUCENE_48
+        LuceneVersion.LUCENE_48,
+        new GenerationStorageStrategy()
     );
 
     public static readonly string DefaultIndex = "SimpleIndex";
@@ -70,6 +71,7 @@ internal static class MockDataProvider
         },
         [],
         [],
-        LuceneVersion.LUCENE_48
+        LuceneVersion.LUCENE_48,
+        new GenerationStorageStrategy()
     );
 }

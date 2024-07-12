@@ -39,8 +39,8 @@
       },
       "Azure.Core": {
         "type": "Transitive",
-        "resolved": "1.35.0",
-        "contentHash": "hENcx03Jyuqv05F4RBEPbxz29UrM3Nbhnr6Wl6NQpoU9BCIbL3XLentrxDCTrH54NLS11Exxi/o8MYgT/cnKFA==",
+        "resolved": "1.36.0",
+        "contentHash": "vwqFZdHS4dzPlI7FFRkPx9ctA+aGGeRev3gnzG8lntWvKMmBhAmulABi1O9CEvS3/jzYt7yA+0pqVdxkpAd7dQ==",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "1.1.1",
           "System.Diagnostics.DiagnosticSource": "6.0.1",
@@ -63,6 +63,24 @@
           "System.Security.Cryptography.ProtectedData": "4.7.0",
           "System.Text.Json": "4.7.2",
           "System.Threading.Tasks.Extensions": "4.5.4"
+        }
+      },
+      "Azure.Storage.Blobs": {
+        "type": "Transitive",
+        "resolved": "12.19.1",
+        "contentHash": "x43hWFJ4sPQ23TD4piCwT+KlQpZT8pNDAzqj6yUCqh+WJ2qcQa17e1gh6ZOeT2QNFQTTDSuR56fm2bIV7i11/w==",
+        "dependencies": {
+          "Azure.Storage.Common": "12.18.1",
+          "System.Text.Json": "4.7.2"
+        }
+      },
+      "Azure.Storage.Common": {
+        "type": "Transitive",
+        "resolved": "12.18.1",
+        "contentHash": "ohCslqP9yDKIn+DVjBEOBuieB1QwsUCz+BwHYNaJ3lcIsTSiI4Evnq81HcKe8CqM8qvdModbipVQKpnxpbdWqA==",
+        "dependencies": {
+          "Azure.Core": "1.36.0",
+          "System.IO.Hashing": "6.0.0"
         }
       },
       "BananaCakePop.Middleware": {
@@ -898,7 +916,8 @@
           "Kentico.Xperience.Core": "[29.0.0, )",
           "Lucene.Net": "[4.8.0-beta00016, )",
           "Lucene.Net.Analysis.Common": "[4.8.0-beta00016, )",
-          "Lucene.Net.Facet": "[4.8.0-beta00016, )"
+          "Lucene.Net.Facet": "[4.8.0-beta00016, )",
+          "Lucene.Net.Store.AzureBlob": "[1.0.5-beta, )"
         }
       },
       "Kentico.Xperience.Core": {
@@ -966,6 +985,16 @@
         "dependencies": {
           "Lucene.Net.Join": "4.8.0-beta00016",
           "Lucene.Net.Queries": "4.8.0-beta00016"
+        }
+      },
+      "Lucene.Net.Store.AzureBlob": {
+        "type": "CentralTransitive",
+        "requested": "[1.0.5-beta, )",
+        "resolved": "1.0.5-beta",
+        "contentHash": "n9PvrqGUEsG1xbXiI2YWDqTH58wa8Zwa+sbINoC8+Nz8hGTDkFtCSs9ke1FAQelrY8TVwYcXnas3IBWa0+F5Ow==",
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.19.1",
+          "Lucene.Net": "4.8.0-beta00016"
         }
       }
     }

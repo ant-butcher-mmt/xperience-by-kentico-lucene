@@ -14,6 +14,7 @@ public static class LuceneStartupExtensions
     /// Adds Lucene services and custom module to application using the <see cref="DefaultLuceneIndexingStrategy"/> and <see cref="StandardAnalyzer"/> for all indexes
     /// </summary>
     /// <param name="serviceCollection">the <see cref="IServiceCollection"/> which will be modified</param>
+    /// <param name="settings"></param>
     /// <returns>Returns this instance of <see cref="IServiceCollection"/>, allowing for further configuration in a fluent manner.</returns>
     public static IServiceCollection AddKenticoLucene(this IServiceCollection serviceCollection)
     {
@@ -33,7 +34,8 @@ public static class LuceneStartupExtensions
     /// <param name="serviceCollection">the <see cref="IServiceCollection"/> which will be modified</param>
     /// <param name="configure"><see cref="Action"/> which will configure the <see cref="ILuceneBuilder"/></param>
     /// <returns>Returns this instance of <see cref="IServiceCollection"/>, allowing for further configuration in a fluent manner.</returns>
-    public static IServiceCollection AddKenticoLucene(this IServiceCollection serviceCollection, Action<ILuceneBuilder> configure)
+    public static IServiceCollection AddKenticoLucene(
+        this IServiceCollection serviceCollection, Action<ILuceneBuilder> configure)
     {
         serviceCollection.AddLuceneServicesInternal();
 
@@ -55,17 +57,26 @@ public static class LuceneStartupExtensions
     }
 
 
-    private static IServiceCollection AddLuceneServicesInternal(this IServiceCollection services) =>
+    private static IServiceCollection AddLuceneServicesInternal(this IServiceCollection services)
+    {
         services
+            .AddSingleton<LuceneIndexFactory>()
             .AddSingleton<LuceneModuleInstaller>()
             .AddSingleton<ILuceneClient, DefaultLuceneClient>()
             .AddSingleton<ILuceneTaskLogger, DefaultLuceneTaskLogger>()
             .AddSingleton<ILuceneTaskProcessor, DefaultLuceneTaskProcessor>()
+            .AddSingleton<LuceneIndexStorageStrategyFactory>()
+            .AddSingleton<BlobContainerClientFactory>()
             .AddSingleton<ILuceneConfigurationStorageService, DefaultLuceneConfigurationStorageService>()
-            .AddSingleton<ILuceneIndexService, DefaultLuceneIndexService>()
-            .AddSingleton<ILuceneSearchService, DefaultLuceneSearchService>()
+            .AddSingleton<ILuceneIndexService, BlobStorageBackedLuceneIndexService>()
+            //.AddSingleton<ILuceneIndexService, DefaultLuceneIndexService>()
+            .AddSingleton<ILuceneSearchService, BlobStorageBackedLuceneSearchService>()
+            //.AddSingleton<ILuceneSearchService, DefaultLuceneSearchService>()
             .AddSingleton<ILuceneIndexManager, DefaultLuceneIndexManager>()
             .AddTransient<DefaultLuceneIndexingStrategy>();
+
+        return services;
+    }
 }
 
 
@@ -103,6 +114,8 @@ public interface ILuceneBuilder
     /// <param name="matchVersion"><see cref="LuceneVersion"/> to be used by the <see cref="Analyzer"/></param>
     /// <returns>Returns this instance of <see cref="ILuceneBuilder"/>, allowing for further configuration in a fluent manner.</returns>
     ILuceneBuilder SetAnalyzerLuceneVersion(LuceneVersion matchVersion);
+
+    ILuceneBuilder SetBlobStorageSettings(LuceneBlobStorageSettings settings);
 }
 
 
@@ -166,6 +179,12 @@ internal class LuceneBuilder : ILuceneBuilder
     {
         AnalyzerStorage.SetAnalyzerLuceneVersion(matchVersion);
 
+        return this;
+    }
+
+    public ILuceneBuilder SetBlobStorageSettings(LuceneBlobStorageSettings settings)
+    {
+        serviceCollection.AddSingleton(settings);
         return this;
     }
 }

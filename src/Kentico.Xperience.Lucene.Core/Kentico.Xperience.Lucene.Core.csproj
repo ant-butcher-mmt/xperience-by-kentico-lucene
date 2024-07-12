@@ -30,6 +30,7 @@
     <PackageReference Include="Lucene.Net" />
     <PackageReference Include="Lucene.Net.Analysis.Common" />
     <PackageReference Include="Lucene.Net.Facet" />
+    <PackageReference Include="Lucene.Net.Store.AzureBlob" />
   </ItemGroup>
 
 </Project>

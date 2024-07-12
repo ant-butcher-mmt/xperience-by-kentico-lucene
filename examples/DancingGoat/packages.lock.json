@@ -989,15 +989,15 @@
       "kentico.xperience.lucene": {
         "type": "Project",
         "dependencies": {
-          "Kentico.Xperience.Lucene.Admin": "[5.0.0-prerelease-1, )",
-          "Kentico.Xperience.Lucene.Core": "[5.0.0-prerelease-1, )"
+          "Kentico.Xperience.Lucene.Admin": "[7.0.2, )",
+          "Kentico.Xperience.Lucene.Core": "[7.0.2, )"
         }
       },
       "kentico.xperience.lucene.admin": {
         "type": "Project",
         "dependencies": {
           "Kentico.Xperience.Admin": "[29.0.0, )",
-          "Kentico.Xperience.Lucene.Core": "[5.0.0-prerelease-1, )"
+          "Kentico.Xperience.Lucene.Core": "[7.0.2, )"
         }
       },
       "kentico.xperience.lucene.core": {
@@ -1006,7 +1006,8 @@
           "Kentico.Xperience.Core": "[29.0.0, )",
           "Lucene.Net": "[4.8.0-beta00016, )",
           "Lucene.Net.Analysis.Common": "[4.8.0-beta00016, )",
-          "Lucene.Net.Facet": "[4.8.0-beta00016, )"
+          "Lucene.Net.Facet": "[4.8.0-beta00016, )",
+          "Lucene.Net.Store.AzureBlob": "[1.0.5-beta, )"
         }
       },
       "Kentico.Xperience.Core": {
@@ -1058,6 +1059,16 @@
         "dependencies": {
           "Lucene.Net.Join": "4.8.0-beta00016",
           "Lucene.Net.Queries": "4.8.0-beta00016"
+        }
+      },
+      "Lucene.Net.Store.AzureBlob": {
+        "type": "CentralTransitive",
+        "requested": "[1.0.5-beta, )",
+        "resolved": "1.0.5-beta",
+        "contentHash": "n9PvrqGUEsG1xbXiI2YWDqTH58wa8Zwa+sbINoC8+Nz8hGTDkFtCSs9ke1FAQelrY8TVwYcXnas3IBWa0+F5Ow==",
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.19.1",
+          "Lucene.Net": "4.8.0-beta00016"
         }
       }
     }
